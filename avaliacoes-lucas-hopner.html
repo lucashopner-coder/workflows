@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avaliações — Lucas Höpner</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --ivory:#FBF8F3;
+    --card:#FFFFFF;
+    --teal:#2C4A47;
+    --teal-soft:#5C7A76;
+    --sage:#DCE6E2;
+    --ember:#D97A46;
+    --text-muted:#6B7570;
+    --line:#E7E1D6;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0; padding:0;
+    background:transparent;
+    font-family:'Inter', sans-serif;
+    color:var(--teal);
+  }
+
+  .widget{
+    background:var(--ivory);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 20px 16px;
+    max-width:100%;
+    overflow:hidden;
+  }
+
+  .widget__header{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:14px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .rating-number{
+    font-family:'Fraunces', serif;
+    font-size:38px;
+    font-weight:600;
+    line-height:1;
+    color:var(--teal);
+  }
+
+  .header-meta{ display:flex; flex-direction:column; gap:4px; }
+
+  .stars{ color:var(--ember); font-size:14px; letter-spacing:2px; }
+
+  .header-sub{
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+
+  .track-wrap{ position:relative; }
+
+  .track{
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    scroll-snap-type:x proximity;
+    padding-bottom:6px;
+    scrollbar-width:none;
+  }
+  .track::-webkit-scrollbar{ display:none; }
+
+  .review-card{
+    scroll-snap-align:start;
+    flex:0 0 auto;
+    width:260px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .review-card__quote{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    color:var(--sage);
+    line-height:0.5;
+  }
+
+  .review-card__text{
+    font-size:13px;
+    line-height:1.5;
+    color:var(--teal);
+    display:-webkit-box;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    min-height:58px;
+  }
+
+  .review-card__footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:auto;
+    padding-top:8px;
+    border-top:1px solid var(--line);
+  }
+
+  .review-card__name{ font-size:12.5px; font-weight:600; }
+  .review-card__date{ font-size:11px; color:var(--text-muted); }
+  .review-card__stars{ color:var(--ember); font-size:11px; letter-spacing:1px; }
+
+  .nav-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:30px; height:30px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--ivory);
+    color:var(--teal);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    font-size:14px;
+  }
+  .nav-btn:hover{ background:var(--sage); }
+  .nav-prev{ left:-4px; }
+  .nav-next{ right:-4px; }
+
+  .widget__footer{
+    margin-top:14px;
+    text-align:center;
+  }
+  .widget__footer a{
+    font-size:11.5px;
+    color:var(--teal-soft);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    padding-bottom:1px;
+  }
+
+  @media (max-width:420px){
+    .nav-btn{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="widget">
+  <div class="widget__header">
+    <div class="rating-number" id="ratingNumber">5,0</div>
+    <div class="header-meta">
+      <div class="stars">★★★★★</div>
+      <div class="header-sub" id="reviewCount">Baseado em 22 avaliações verificadas</div>
+    </div>
+  </div>
+
+  <div class="track-wrap">
+    <button class="nav-btn nav-prev" aria-label="Anterior" onclick="scrollTrack(-1)">‹</button>
+    <div class="track" id="track"></div>
+    <button class="nav-btn nav-next" aria-label="Próxima" onclick="scrollTrack(1)">›</button>
+  </div>
+
+  <div class="widget__footer">
+    <a href="https://www.psitto.com.br/psicologo/lucas-hopner/#testimonials" target="_blank" rel="noopener">Ver todas as avaliações</a>
+  </div>
+</div>
+
+<script>
+  // ===REVIEWS_START=== (não edite estas duas linhas de marcador — o script de atualização procura por elas)
+  const REVIEWS = [
+    { name:"Richard", date:"31/ago/2026", text:"Lucas ajudou muito em vários aspectos para entender melhor meus pensamentos e o que estou vivendo. Agradeço a paciência e a ajuda." },
+    { name:"Durval", date:"20/mai/2026", text:"Atencioso, pontual e obtive uma preocupação por parte do profissional em realizar um tratamento abrangente. Um dos que mais tempo me prestou serviços." },
+    { name:"Teo", date:"19/mar/2026", text:"Psicólogo gente boa demais, recomendo, tamo junto." },
+    { name:"Bruna", date:"19/jan/2026", text:"Profissional atencioso, competente, empático e dedicado. Me senti muito acolhida, as sessões foram excelentes. Super recomendo." },
+    { name:"Alex", date:"21/nov/2025", text:"Profissional dedicado e comprometido com a atenção global ao paciente! Indico pela empatia, pontualidade e pelo arsenal de recursos terapêuticos." },
+    { name:"Artur", date:"16/out/2025", text:"Super atendeu as expectativas, muito atencioso e direto, meu filho gostou da experiência e com certeza voltaremos se for preciso." },
+    { name:"Vinicius", date:"27/mar/2025", text:"Ótimo profissionalismo, indico sem dúvidas." },
+    { name:"Flavia", date:"28/fev/2025", text:"Gostaria de agradecer a paciência, o cuidado e o profissionalismo do Lucas." },
+    { name:"Eduardo", date:"20/dez/2024", text:"Ótimo profissional, com boas ferramentas como a roda da vida e coisas mais práticas, o que torna o processo terapêutico mais fácil." },
+    { name:"Renato", date:"22/set/2023", text:"Profissional extraordinário. Humano, profundo conhecedor da temática e preocupado em dar ao cliente um ambiente acolhedor. Plenamente satisfeito." },
+    { name:"Diogo", date:"12/jun/2023", text:"O Lucas foi sempre muito atencioso e bem pontual com relação à minha busca na terapia. Apesar de curto, foi um período engrandecedor." },
+    { name:"Clay", date:"19/out/2022", text:"Profissional extremamente competente, qualificado, assertivo, sempre conduzindo ao óbvio que não conseguimos enxergar." },
+    { name:"Ivan", date:"30/set/2022", text:"Em um momento muito difícil, o Lucas me ajudou demais. Sou muito grato!" },
+  ];
+  // ===REVIEWS_END===
+
+  const track = document.getElementById('track');
+  track.innerHTML = REVIEWS.map(r => `
+    <div class="review-card">
+      <div class="review-card__quote">”</div>
+      <div class="review-card__text">${r.text}</div>
+      <div class="review-card__footer">
+        <div>
+          <div class="review-card__name">${r.name}</div>
+          <div class="review-card__date">${r.date}</div>
+        </div>
+        <div class="review-card__stars">★★★★★</div>
+      </div>
+    </div>
+  `).join('');
+
+  function scrollTrack(dir){
+    track.scrollBy({ left: dir * 280, behavior:'smooth' });
+  }
+</script>
+
+</body>
+</html>
